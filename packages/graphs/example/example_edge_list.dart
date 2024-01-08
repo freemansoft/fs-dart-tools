@@ -14,6 +14,10 @@ void main() {
   final nodeC = GraphNode(id: 'C', data: 3);
   final nodeD = GraphNode(id: 'D', data: 4);
 
+  // added later to test merge
+  final nodeZZ = GraphNode(id: 'ZZ', data: 99);
+  final nodeZZZ = GraphNode(id: 'ZZZ', data: 999);
+
   final nodes = <GraphNode<int>>[nodeA, nodeB, nodeC, nodeD];
 
   final graphDirected = DirectedGraphEdgeList({
@@ -42,6 +46,13 @@ void main() {
 
   print('Strongly connected components $components');
 
+  graphDirected.mergeEdges({
+    DirectedGraphEdge<int, String>(
+        from: nodeZZ, to: nodeZZZ, data: 'discovered')
+  });
+  print('Directed graph after additions: \n $graphDirected');
+  print('\n');
+
   final graphUndirected = UndirectedGraphEdgeList({
     UndirectedGraphEdge(from: nodeA, to: nodeB, data: 'parent'),
     UndirectedGraphEdge(from: nodeA, to: nodeC, data: 'parent'),
@@ -58,4 +69,10 @@ void main() {
   print(
     'Unirected: edges leaving $nodeB : ${graphUndirected.edgesAdjacent(nodeB)}',
   );
+
+  graphUndirected.mergeEdges({
+    UndirectedGraphEdge<int, String>(
+        from: nodeZZ, to: nodeZZZ, data: 'discovered')
+  });
+  print('Undirected graph after additions: \n $graphDirected');
 }

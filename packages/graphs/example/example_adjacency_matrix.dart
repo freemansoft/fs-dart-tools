@@ -59,7 +59,7 @@ void main() {
   // add a couple nodes and edges
   final nodeZZ = GraphNode(id: 'ZZ', data: 99);
   final nodeZZZ = GraphNode(id: 'ZZZ', data: 999);
-  graph.addEdges({
+  graph.mergeEdges({
     MatrixEdgeDef(from: nodeZZ, to: nodeZZZ, edgeData: '??', directed: false),
     MatrixEdgeDef(from: nodeZZ, to: nodeD, edgeData: 'discovered'),
   });

@@ -5,8 +5,10 @@
 // See https://en.wikipedia.org/wiki/Adjacency_list
 // This only requires one class because we only do Node comparisons
 //
-// Future:
-// 1. addGraphNode()
+// To Do:
+// 1. Hide instance variables
+// 2. Copy passed in structures
+// 3. addGraphNode()/mergeGraphNode()
 //
 
 /// A representation of a directed graph.

@@ -4,12 +4,11 @@
 //
 // See https://en.wikipedia.org/wiki/Adjacency_matrix
 //
-// Future:
-// 1. addGraphNode()
-// 2. addRelationship()
+// To Do:
+// 1. Hide instance variables
+// 2. Copy passed in structures
 //
 import 'package:collection/collection.dart';
-import 'package:fs_graphs/src/graph_node.dart';
 
 /// An immutable AdjacencyMatrix -- cannot be added too
 ///
@@ -36,7 +35,18 @@ class AdjacencyMatrix<N, T> {
   AdjacencyMatrix(
     Set<MatrixEdgeDef<N, T>> edges,
   ) {
-    edgeMatrix = _addEdges<N, T>(
+    edgeMatrix = _mergeEdges<N, T>(
+        edges: edges,
+        nodeToIndex: nodeMap,
+        indexToNode: rankMap,
+        existingEdges: edgeMatrix);
+  }
+
+  /// Explicitly adds edges.  Implicitly adds nodes. Replaces existing edge.
+  /// This is expensive because it builds a new matrix.
+  /// Add as many as you can at at a time to reduce resizing.
+  void mergeEdges(Set<MatrixEdgeDef<N, T>> edges) {
+    edgeMatrix = _mergeEdges<N, T>(
         edges: edges,
         nodeToIndex: nodeMap,
         indexToNode: rankMap,
@@ -172,21 +182,11 @@ class AdjacencyMatrix<N, T> {
     }
     return result.toString();
   }
-
-  /// Adds nodes and edges.
-  /// This is expensive because it builds a new matrix.
-  /// Add as many as you can at at a time.
-  void addEdges(Set<MatrixEdgeDef<N, T>> edges) {
-    edgeMatrix = _addEdges<N, T>(
-        edges: edges,
-        nodeToIndex: nodeMap,
-        indexToNode: rankMap,
-        existingEdges: edgeMatrix);
-  }
 }
 
 /// Adds edges to an existing matrix.
-List<T?> _addEdges<N, T>(
+/// Adds nodes as needed to store the edges
+List<T?> _mergeEdges<N, T>(
     {required Set<MatrixEdgeDef<N, T>> edges,
     required Map<N, int> nodeToIndex,
     required Map<int, N> indexToNode,

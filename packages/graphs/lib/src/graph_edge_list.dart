@@ -6,8 +6,9 @@
 // This rquires two classes because Edge equality and hashcode
 // take directionality into account or they ignore it
 //
-// Future:
-// 1. addEdge() - new [GraphNode] are implied by an edge
+// To Do:
+// 1. Hide instance variables
+// 2. Copy passed in structures
 //
 
 import 'graph_edge.dart';
@@ -26,9 +27,17 @@ import 'graph_node.dart';
 /// [N] is the [GraphNode] data type. [T] is the [GraphEdge] data type.
 /// This does NOT support orphan [GraphNode] with no edges.
 class DirectedGraphEdgeList<N, T> {
-  final Set<DirectedGraphEdge<N, T>> edges;
+  final Set<DirectedGraphEdge<N, T>> edges = {};
 
-  DirectedGraphEdgeList(this.edges);
+  DirectedGraphEdgeList(Set<DirectedGraphEdge<N, T>> newEdges) {
+    _mergeDirectedEdges(existingEdges: edges, newEdges: newEdges);
+  }
+
+  /// Adds edges to existing graph
+  /// Replaces existing edges for a from-to pair
+  void mergeEdges(Set<DirectedGraphEdge<N, T>> newEdges) {
+    _mergeDirectedEdges(existingEdges: edges, newEdges: newEdges);
+  }
 
   /// Returns the nodes on the _to_ side of an edge _from_ [aNode]
   /// This is essentially the `edges` function for this graph
@@ -50,7 +59,24 @@ class DirectedGraphEdgeList<N, T> {
   String toString() => edges.toString();
 }
 
+void _mergeDirectedEdges(
+    {required Set<DirectedGraphEdge> existingEdges,
+    required Set<DirectedGraphEdge> newEdges}) {
+  // ignore: avoid_function_literals_in_foreach_calls
+  newEdges.forEach((oneEdge) {
+    if (!existingEdges.contains(oneEdge)) {
+      existingEdges.add(oneEdge);
+    } else {
+      // Replaces the existing.
+      existingEdges.add(oneEdge);
+    }
+  });
+}
+
 /// A representation of an undirected graph.
+///
+/// This knows it is undirected and behaves accordingly
+/// There is no need to add two directional edges to represent an undirectional
 ///
 /// Graph is stored as a set of [UndirectedGraphEdge].
 /// Each edge relates two [GraphNode]
@@ -61,9 +87,17 @@ class DirectedGraphEdgeList<N, T> {
 /// [N] is the [GraphNode] data type. [T] is the [GraphEdge] data type.
 /// This does NOT support orphan [GraphNode] with no edges.
 class UndirectedGraphEdgeList<N, T> {
-  final Set<UndirectedGraphEdge<N, T>> edges;
+  final Set<UndirectedGraphEdge<N, T>> edges = {};
 
-  UndirectedGraphEdgeList(this.edges);
+  UndirectedGraphEdgeList(Set<UndirectedGraphEdge<N, T>> newEdges) {
+    _mergeUndirectedEdges(existingEdges: edges, newEdges: newEdges);
+  }
+
+  /// Adds edges to existing graph
+  /// Replaces existing edges for a from-to pair
+  void mergeEdges(Set<UndirectedGraphEdge<N, T>> newEdges) {
+    _mergeUndirectedEdges(existingEdges: edges, newEdges: newEdges);
+  }
 
   /// Returns nodes next to [aNode] in any relationship
   /// This is essentially the `edges` function for this graph
@@ -100,4 +134,18 @@ class UndirectedGraphEdgeList<N, T> {
 
   @override
   String toString() => edges.toString();
+}
+
+void _mergeUndirectedEdges(
+    {required Set<UndirectedGraphEdge> existingEdges,
+    required Set<UndirectedGraphEdge> newEdges}) {
+  // ignore: avoid_function_literals_in_foreach_calls
+  newEdges.forEach((oneEdge) {
+    if (!existingEdges.contains(oneEdge)) {
+      existingEdges.add(oneEdge);
+    } else {
+      // Replaces the existing.
+      existingEdges.add(oneEdge);
+    }
+  });
 }
