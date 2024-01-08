@@ -55,4 +55,14 @@ void main() {
 
   final shortest = shortestPath(nodeA, nodeD, graph.nodesNextTo);
   print('shortest from $nodeA to $nodeD is $shortest');
+
+  // add a couple nodes and edges
+  final nodeZZ = GraphNode(id: 'ZZ', data: 99);
+  final nodeZZZ = GraphNode(id: 'ZZZ', data: 999);
+  graph.addEdges({
+    MatrixEdgeDef(from: nodeZZ, to: nodeZZZ, edgeData: '??', directed: false),
+    MatrixEdgeDef(from: nodeZZ, to: nodeD, edgeData: 'discovered'),
+  });
+
+  print('AdjacencyMatrix graph\n$graph');
 }

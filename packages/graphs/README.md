@@ -17,6 +17,10 @@ Algorithms
 
 * [Stoer Wagner algorithm](https://en.wikipedia.org/wiki/Stoer%E2%80%93Wagner_algorithm)
 
+Dart references on algorithms
+
+* [Data Structures and Algorithms 5/5 by Al-Shahmeh](https://medium.com/@m.m.shahmeh/data-structures-algorithms-in-dart-5-5-660e0ef30a4d)
+
 ## Features
 
 TODO: To be added

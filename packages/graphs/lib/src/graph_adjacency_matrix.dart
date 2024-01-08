@@ -9,10 +9,11 @@
 // 2. addRelationship()
 //
 import 'package:collection/collection.dart';
+import 'package:fs_graphs/src/graph_node.dart';
 
 /// An immutable AdjacencyMatrix -- cannot be added too
 ///
-/// [N] is the Node Type
+/// [N] is the Node Type - must implement equals and hash for identity
 ///
 /// [T] is the Edge Type
 class AdjacencyMatrix<N, T> {
@@ -35,49 +36,11 @@ class AdjacencyMatrix<N, T> {
   AdjacencyMatrix(
     Set<MatrixEdgeDef<N, T>> edges,
   ) {
-    // Find all the nodes in all the edges
-    // Use a set to dedupe
-    // Create a map from the Node to its position
-    nodeMap.addEntries(
-      edges
-          .map((e) => [e.from, e.to])
-          .flattened
-          .whereType<N>()
-          .toSet()
-          .mapIndexed((index, node) => MapEntry(node, index)),
-    );
-    // rankMap is nodeMap inverted
-    rankMap.addEntries(nodeMap.entries.map((e) => MapEntry(e.value, e.key)));
-
-    // create the empty matrix
-    edgeMatrix = List.filled(nodeMap.length * nodeMap.length, null);
-
-    // now start filling adjacency matrix with edges
-    // ignore: avoid_function_literals_in_foreach_calls
-    edges.forEach(
-      (e) {
-        if ((e.to == null && e.edgeData != null) ||
-            (e.to != null && e.edgeData == null)) {
-          throw InvalidMatrixEdgeDef(e);
-        }
-        if (e.to != null) {
-          edgeMatrix[_calculateLocationFromRank(
-            fromRank: nodeMap[e.from]!,
-            toRank: nodeMap[e.to]!,
-            rankSize: nodeMap.length,
-          )] = e.edgeData;
-          if (!e.directed) {
-            edgeMatrix[_calculateLocationFromRank(
-              fromRank: nodeMap[e.to]!,
-              toRank: nodeMap[e.from]!,
-              rankSize: nodeMap.length,
-            )] = e.edgeData;
-          }
-        }
-      },
-    );
-
-    // need to fix this
+    edgeMatrix = _addEdges<N, T>(
+        edges: edges,
+        nodeToIndex: nodeMap,
+        indexToNode: rankMap,
+        existingEdges: edgeMatrix);
   }
 
   /// Returns the nodes on the _to_ side of an edge _from_ [aNode]
@@ -209,6 +172,87 @@ class AdjacencyMatrix<N, T> {
     }
     return result.toString();
   }
+
+  /// Adds nodes and edges.
+  /// This is expensive because it builds a new matrix.
+  /// Add as many as you can at at a time.
+  void addEdges(Set<MatrixEdgeDef<N, T>> edges) {
+    edgeMatrix = _addEdges<N, T>(
+        edges: edges,
+        nodeToIndex: nodeMap,
+        indexToNode: rankMap,
+        existingEdges: edgeMatrix);
+  }
+}
+
+/// Adds edges to an existing matrix.
+List<T?> _addEdges<N, T>(
+    {required Set<MatrixEdgeDef<N, T>> edges,
+    required Map<N, int> nodeToIndex,
+    required Map<int, N> indexToNode,
+    required List<T?> existingEdges}) {
+  final oldNumNodes = nodeToIndex.length;
+
+  // Find all the nodes in all the edges
+  // Use a set to dedupe
+  // Create a map from the Node to its position
+  // Do NOT replace existing node with a new one because will change the index.
+  var newNodeToIndexEntries = edges
+      .map((e) => [e.from, e.to])
+      .flattened
+      .whereType<N>()
+      .toSet()
+      .mapIndexed((index, node) => nodeToIndex.containsKey(node)
+          ? null
+          : MapEntry(node, index + oldNumNodes))
+      .nonNulls;
+  nodeToIndex.addEntries(newNodeToIndexEntries);
+  // rankMap is nodeMap inverted
+  indexToNode.clear();
+  indexToNode
+      .addEntries(nodeToIndex.entries.map((e) => MapEntry(e.value, e.key)));
+
+  // create the empty matrix
+  List<T?> edgeMatrix =
+      List.filled(nodeToIndex.length * nodeToIndex.length, null);
+  // copy the old matrix into it
+  for (int fromRank = 0; fromRank < oldNumNodes; fromRank++) {
+    for (int toRank = 0; toRank < oldNumNodes; toRank++) {
+      edgeMatrix[_calculateLocationFromRank(
+              fromRank: fromRank,
+              toRank: toRank,
+              rankSize: nodeToIndex.length)] =
+          existingEdges[_calculateLocationFromRank(
+              fromRank: fromRank, toRank: toRank, rankSize: oldNumNodes)];
+    }
+  }
+
+  // fill adjacency matrix with the new edges
+  // ignore: avoid_function_literals_in_foreach_calls
+  edges.forEach(
+    (e) {
+      if ((e.to == null && e.edgeData != null) ||
+          (e.to != null && e.edgeData == null)) {
+        throw InvalidMatrixEdgeDef(e);
+      }
+      if (e.to != null) {
+        edgeMatrix[_calculateLocationFromRank(
+          fromRank: nodeToIndex[e.from]!,
+          toRank: nodeToIndex[e.to]!,
+          rankSize: nodeToIndex.length,
+        )] = e.edgeData;
+        if (!e.directed) {
+          edgeMatrix[_calculateLocationFromRank(
+            fromRank: nodeToIndex[e.to]!,
+            toRank: nodeToIndex[e.from]!,
+            rankSize: nodeToIndex.length,
+          )] = e.edgeData;
+        }
+      }
+    },
+  );
+
+  return edgeMatrix;
 }
 
 // each cell is limited to a width of
