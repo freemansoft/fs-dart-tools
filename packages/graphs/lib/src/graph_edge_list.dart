@@ -55,8 +55,21 @@ class DirectedGraphEdgeList<N, T> {
       edges.map((e) => e.from == aNode && e.to == bNode ? e : null).nonNulls;
 
   @override
-  String toString() => edges.toString();
+  String toString() {
+    final returnBuffer = StringBuffer();
+    for (var element in edges) {
+      returnBuffer.writeln(' ${_fixedWidthString(element.from)} '
+          '${_fixedWidthString(element.to)} '
+          '${_fixedWidthString(element.data.toString())} '
+          '');
+    }
+
+    return returnBuffer.toString();
+  }
 }
+
+String _fixedWidthString(Object o, {maxCellWidth = 10}) =>
+    o.toString().padRight(maxCellWidth).substring(0, maxCellWidth);
 
 void _mergeDirectedEdges(
     {required Set<DirectedGraphEdge> existingEdges,

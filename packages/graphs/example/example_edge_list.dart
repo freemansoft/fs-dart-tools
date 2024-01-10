@@ -50,7 +50,7 @@ void main() {
     DirectedGraphEdge<int, String>(
         from: nodeZZ, to: nodeZZZ, data: 'discovered')
   });
-  print('Directed graph after additions: \n $graphDirected');
+  print('Directed graph after additions: \n$graphDirected');
   print('\n');
 
   final graphUndirected = UndirectedGraphEdgeList({
@@ -74,5 +74,5 @@ void main() {
     UndirectedGraphEdge<int, String>(
         from: nodeZZ, to: nodeZZZ, data: 'discovered')
   });
-  print('Undirected graph after additions: \n $graphDirected');
+  print('Undirected graph after additions: \n$graphDirected');
 }

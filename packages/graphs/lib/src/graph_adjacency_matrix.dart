@@ -254,11 +254,8 @@ List<T?> _mergeEdges<N, T>(
   return edgeMatrix;
 }
 
-// each cell is limited to a width of
-const _maxCellWidth = 10;
-
-String _fixedWidthString(Object o) =>
-    o.toString().padRight(_maxCellWidth).substring(0, _maxCellWidth);
+String _fixedWidthString(Object o, {maxCellWidth = 10}) =>
+    o.toString().padRight(maxCellWidth).substring(0, maxCellWidth);
 
 int _calculateLocationFromRank({
   required int fromRank,
