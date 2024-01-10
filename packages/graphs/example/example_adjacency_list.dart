@@ -21,13 +21,19 @@ void main() {
   print('In directed graph $nodeC next to ${graph.nodesNextTo(nodeC)}');
 
   final components = stronglyConnectedComponents<GraphNode<int>>(
-    graph.nodes.keys,
+    graph.nodesAndEdges.keys,
     graph.nodesNextTo,
   );
 
   print('Strongly connected components $components');
-
   print('In undirected graph $nodeC next to ${graph.nodesAdjacent(nodeC)}');
+  print('graph (initial)\n${graph.toString()}');
 
-  print('graph\n ${graph.toString()}');
+  final nodeZZ = GraphNode(id: 'ZZ', data: 99);
+  final nodeZZZ = GraphNode(id: 'ZZZ', data: 999);
+  graph.mergeEdges({
+    nodeZZ: {nodeZZZ},
+    nodeD: {nodeZZZ}
+  });
+  print('graph (added)\n${graph.toString()}');
 }

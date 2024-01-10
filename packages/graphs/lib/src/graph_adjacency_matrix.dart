@@ -6,7 +6,6 @@
 //
 // To Do:
 // 1. Hide instance variables
-// 2. Copy passed in structures
 //
 import 'package:collection/collection.dart';
 

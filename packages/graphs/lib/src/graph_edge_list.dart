@@ -8,7 +8,6 @@
 //
 // To Do:
 // 1. Hide instance variables
-// 2. Copy passed in structures
 //
 
 import 'graph_edge.dart';
