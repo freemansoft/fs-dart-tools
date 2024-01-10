@@ -41,18 +41,21 @@ class DirectedGraphEdgeList<N, T> {
   /// Returns the nodes on the _to_ side of an edge _from_ [aNode]
   /// This is essentially the `edges` function for this graph
   Iterable<GraphNode<N>> nodesNextTo(GraphNode<N> aNode) =>
-      edges.map((e) => e.from == aNode ? e.to : null).nonNulls;
+      edges.map((e) => e.from == aNode ? e.to : null).nonNulls.toSet();
 
   /// Returns the directed edges leaving [aNode] to any node
   Iterable<DirectedGraphEdge<N, T>> edgesNextTo(GraphNode<N> aNode) =>
-      edges.map((e) => e.from == aNode ? e : null).nonNulls;
+      edges.map((e) => e.from == aNode ? e : null).nonNulls.toSet();
 
   /// Returns the directed edges from [aNode] to [bNode]
   Iterable<DirectedGraphEdge<N, T>> edgesTo(
     GraphNode<N> aNode,
     GraphNode<N> bNode,
   ) =>
-      edges.map((e) => e.from == aNode && e.to == bNode ? e : null).nonNulls;
+      edges
+          .map((e) => e.from == aNode && e.to == bNode ? e : null)
+          .nonNulls
+          .toSet();
 
   @override
   String toString() {
@@ -121,14 +124,16 @@ class UndirectedGraphEdgeList<N, T> {
                 ? e.from
                 : null,
       )
-      .nonNulls;
+      .nonNulls
+      .toSet();
 
   /// Returns all edges next to [aNode] undirected, in any relationship
-  Iterable<GraphEdge<N, T>> edgesAdjacent(GraphNode<N> aNode) => edges
+  Iterable<UndirectedGraphEdge<N, T>> edgesAdjacent(GraphNode<N> aNode) => edges
       .map(
         (e) => (e.from == aNode) || (e.to == aNode) ? e : null,
       )
-      .nonNulls;
+      .nonNulls
+      .toSet();
 
   /// Returns edges between [aNode] and [bNode] undirected, in any relationship
   Iterable<UndirectedGraphEdge<N, T>> edgesBetween(
@@ -142,7 +147,8 @@ class UndirectedGraphEdgeList<N, T> {
                 ? e
                 : null,
           )
-          .nonNulls;
+          .nonNulls
+          .toSet();
 
   @override
   String toString() => edges.toString();

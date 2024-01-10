@@ -46,4 +46,29 @@ void main() {
       },
     );
   });
+
+  test(
+    'Edges can be different types',
+    () {
+      final nodeA = GraphNode(id: 'A', data: 1);
+      final nodeB = GraphNode(id: 'B', data: 2);
+      final nodeC = GraphNode(id: 'C', data: 3);
+      final graph = AdjacencyMatrix({
+        MatrixEdgeDef(from: nodeA, to: nodeB, edgeData: ''),
+        MatrixEdgeDef(from: nodeC, to: nodeA, edgeData: 5),
+      });
+
+      final Iterable<GraphNode<int>> nextToNodeA = graph.nodesNextTo(nodeA);
+      final Iterable<GraphNode<int>> adjacentNodeA = graph.nodesAdjacent(nodeA);
+
+      // should check the values
+      expect(nextToNodeA.length, 1);
+      expect(adjacentNodeA.length, 2);
+
+      expect(graph.edgesBetween(nodeA, nodeB).length, equals(1));
+      expect(graph.edgesBetween(nodeA, nodeB).first, isA<String>());
+      expect(graph.edgesBetween(nodeA, nodeC).length, equals(1));
+      expect(graph.edgesBetween(nodeA, nodeC).first, isA<int>());
+    },
+  );
 }

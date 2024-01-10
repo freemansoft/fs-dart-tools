@@ -3,7 +3,7 @@ import 'package:fs_graphs/graphs.dart';
 import 'package:test/test.dart';
 
 void main() {
-  group('Directed Graph Adjacency List', () {
+  group('Directed Graph Edge List', () {
     test(
       'Create a directed graph and merge additional',
       () {
@@ -47,6 +47,28 @@ void main() {
     );
 
     test(
+      'Multiple directed edges of different types same nodes',
+      () {
+        final nodeA = GraphNode(id: 'A', data: 1);
+        final nodeB = GraphNode(id: 'B', data: 2);
+        final nodeC = GraphNode(id: 'C', data: 3);
+        final graph = DirectedGraphEdgeList({
+          DirectedGraphEdge(from: nodeA, to: nodeC, data: ''),
+          DirectedGraphEdge(from: nodeA, to: nodeC, data: 5),
+          DirectedGraphEdge(from: nodeA, to: nodeB, data: ''),
+        });
+
+        final Iterable<GraphNode<int>> nextToNodeA = graph.nodesNextTo(nodeA);
+        final Iterable<DirectedGraphEdge<int, Object>> edgesOfNodeA =
+            graph.edgesNextTo(nodeA);
+
+        // should check the values
+        expect(nextToNodeA.length, 2);
+        expect(edgesOfNodeA.length, 3);
+      },
+    );
+
+    test(
       'Create a undirected graph and merge additional',
       () {
         final nodeA = GraphNode(id: 'A', data: 1);
@@ -85,6 +107,28 @@ void main() {
 
         // expect(nextToNodeDAfter.length, 0);
         expect(adjacentNodeDAfter.length, 2);
+      },
+    );
+
+    test(
+      'Multiple undirected edges of different types same nodes',
+      () {
+        final nodeA = GraphNode(id: 'A', data: 1);
+        final nodeB = GraphNode(id: 'B', data: 2);
+        final nodeC = GraphNode(id: 'C', data: 3);
+        final graph = UndirectedGraphEdgeList({
+          UndirectedGraphEdge(from: nodeA, to: nodeC, data: ''),
+          UndirectedGraphEdge(from: nodeA, to: nodeC, data: 5),
+          UndirectedGraphEdge(from: nodeA, to: nodeB, data: ''),
+        });
+
+        final Iterable<GraphNode<int>> nextToNodeA = graph.nodesAdjacent(nodeA);
+        final Iterable<UndirectedGraphEdge<int, Object>> edgesOfNodeA =
+            graph.edgesAdjacent(nodeA);
+
+        // should check the values
+        expect(nextToNodeA.length, 2);
+        expect(edgesOfNodeA.length, 3);
       },
     );
   });
