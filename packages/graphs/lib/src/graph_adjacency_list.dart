@@ -8,10 +8,7 @@
 // To Do:
 // 1. Hide instance variables
 // 2. Copy passed in structures
-// 3. addGraphNode()/mergeGraphNode()
 //
-
-import 'package:collection/collection.dart';
 
 /// A representation of a directed graph.
 ///
