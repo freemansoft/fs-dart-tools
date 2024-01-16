@@ -1,7 +1,7 @@
 import 'dart:io';
 
 ///
-/// ignores cert in developermode for limited set of domains
+/// Ignores certificates in developermode for limited set of domains
 /// Simplifies development in corporate self signed environment
 /// Configures the emulator or simulator proxy if passed proxy port.
 /// Assumes there is a proxy running locally if proxy port provided
