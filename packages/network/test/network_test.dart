@@ -21,9 +21,7 @@ void main() async {
 
       final url = Uri.https(requestDomain, '/');
       final response = await http.get(url);
-      expect(response.statusCode, equals(200));
-      // print('Response status: ${response.statusCode}');
-      // print('Response body: ${response.body}');
+      expect(response.statusCode, equals(HttpStatus.ok));
     });
 
     test('Fail with wrong exclusion', () async {

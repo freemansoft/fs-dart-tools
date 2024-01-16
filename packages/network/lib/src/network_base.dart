@@ -5,6 +5,7 @@ import 'dart:io';
 /// Simplifies development in corporate self signed environment
 /// Configures the emulator or simulator proxy if passed proxy port.
 /// Assumes there is a proxy running locally if proxy port provided
+/// Proxy only used for mobile devices. We assume browser is already configured.
 ///
 class DevelopmentHttpConfig extends HttpOverrides {
   DevelopmentHttpConfig({
@@ -18,7 +19,7 @@ class DevelopmentHttpConfig extends HttpOverrides {
   /// Defaults to the 10.0.2.x network
   String androidProxyHost;
 
-  /// Proxy used for IOS because it uses the host network.  defaults to 127.0.0.1
+  /// Proxy used for IOS because it uses the host network. defaults to 127.0.0.1
   /// Android has its own network
   String iosProxyHost;
 

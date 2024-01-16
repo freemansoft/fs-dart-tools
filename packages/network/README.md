@@ -4,8 +4,8 @@
 
 | Feature |
 | - |
-| Ignore development domain certificates to not deal with self signed certs |
-| Setup a proxy in Android and IOS emulator expecting it to be on the development amchine. |
+| Ignore development domain certificates in debug in order to not have to deal with self signed certs |
+| Configure a proxy  for Flutter in Android and IOS emulator. Defaults to localhost if activated. |
 
 ## Getting started
 
