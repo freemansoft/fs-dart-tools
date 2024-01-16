@@ -9,9 +9,9 @@ import 'dart:io';
 ///
 class DevelopmentHttpConfig extends HttpOverrides {
   DevelopmentHttpConfig({
-    required this.domains,
+    required this.certExclusionDomains,
     this.iosProxyHost = '127.0.0.1',
-    this.androidProxyHost = '10.0.0.2',
+    this.androidProxyHost = '10.0.2.2',
     this.proxyPort,
   });
 
@@ -24,7 +24,7 @@ class DevelopmentHttpConfig extends HttpOverrides {
   String iosProxyHost;
 
   /// list of domains we exclude from cert check
-  List<String> domains;
+  List<String> certExclusionDomains;
 
   /// proxyPort != null means setup the proxy if isAndroid or isIOS
   int? proxyPort;
@@ -34,8 +34,8 @@ class DevelopmentHttpConfig extends HttpOverrides {
     final exclusion = super.createHttpClient(context);
 
     // ignore self signed certs in these domains
-    exclusion.badCertificateCallback =
-        (cert, host, port) => domains.any((element) => host.endsWith(element));
+    exclusion.badCertificateCallback = (cert, host, port) =>
+        certExclusionDomains.any((element) => host.endsWith(element));
 
     if (proxyPort != null) {
       if (Platform.isAndroid) {
