@@ -7,7 +7,20 @@ import 'dart:io';
 /// Assumes there is a proxy running locally if proxy port provided
 ///
 class DevelopmentHttpConfig extends HttpOverrides {
-  DevelopmentHttpConfig({required this.domains, this.proxyPort});
+  DevelopmentHttpConfig({
+    required this.domains,
+    this.iosProxyHost = '127.0.0.1',
+    this.androidProxyHost = '10.0.0.2',
+    this.proxyPort,
+  });
+
+  /// Proxy used for android
+  /// Defaults to the 10.0.2.x network
+  String androidProxyHost;
+
+  /// Proxy used for IOS because it uses the host network.  defaults to 127.0.0.1
+  /// Android has its own network
+  String iosProxyHost;
 
   /// list of domains we exclude from cert check
   List<String> domains;
@@ -25,10 +38,10 @@ class DevelopmentHttpConfig extends HttpOverrides {
 
     if (proxyPort != null) {
       if (Platform.isAndroid) {
-        exclusion.findProxy = (url) => 'PROXY 10.0.2.2:$proxyPort';
+        exclusion.findProxy = (url) => 'PROXY $androidProxyHost:$proxyPort';
       }
       if (Platform.isIOS) {
-        exclusion.findProxy = (url) => 'Proxy 127.0.0.1:$proxyPort';
+        exclusion.findProxy = (url) => 'Proxy $iosProxyHost:$proxyPort';
       }
     }
     return exclusion;
