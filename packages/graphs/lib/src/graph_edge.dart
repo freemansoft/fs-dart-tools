@@ -6,7 +6,8 @@
 // This rquires two classes because Edge equality and hashcode
 // take directionality into account or they ignore it
 
-import 'graph_node.dart';
+import 'package:fs_graphs/src/graph_node.dart';
+import 'package:meta/meta.dart';
 
 /// An [GraphEdge] epresents the relationship of two nodes.
 ///
@@ -14,15 +15,6 @@ import 'graph_node.dart';
 ///
 /// [T] is the [GraphEdge] data type
 abstract class GraphEdge<N, T> {
-  /// The _from_ part of a directed edge or just an end of an edge if undirected
-  final GraphNode<N> from;
-
-  /// The _to_ part of a directed edge or just an end of an edge if undirected
-  final GraphNode<N> to;
-
-  /// Metadata or data tied to the edge.  Ex: edge weight
-  final T? data;
-
   /// Default constructor
   ///
   /// [from] start of an edge if directed.  Just an end if undirected.
@@ -31,6 +23,15 @@ abstract class GraphEdge<N, T> {
   ///
   /// [data] data or metadata about the edge.  Ex: edge weight
   GraphEdge({required this.from, required this.to, this.data});
+
+  /// The _from_ part of a directed edge or just an end of an edge if undirected
+  final GraphNode<N> from;
+
+  /// The _to_ part of a directed edge or just an end of an edge if undirected
+  final GraphNode<N> to;
+
+  /// Metadata or data tied to the edge.  Ex: edge weight
+  final T? data;
 
   @override
   String toString() {
@@ -45,6 +46,7 @@ abstract class GraphEdge<N, T> {
 /// An [GraphEdge] epresents the relationship of two nodes.
 /// A [DirectedGraphEdge] treates that relationship as directional
 /// equals and hashcode are implemented taking into account direction
+@immutable
 class DirectedGraphEdge<N, T> extends GraphEdge<N, T> {
   DirectedGraphEdge({required super.from, required super.to, super.data});
 
@@ -75,6 +77,7 @@ class DirectedGraphEdge<N, T> extends GraphEdge<N, T> {
 
 /// equals and hashcode are implemented ignoring direction
 /// from and to are just names without directional meaning
+@immutable
 class UndirectedGraphEdge<N, T> extends GraphEdge<N, T> {
   UndirectedGraphEdge({required super.from, required super.to, super.data});
 

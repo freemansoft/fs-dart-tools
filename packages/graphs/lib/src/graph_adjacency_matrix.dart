@@ -15,6 +15,22 @@ import 'package:collection/collection.dart';
 ///
 /// [T] is the Edge Type
 class AdjacencyMatrix<N, T> {
+  /// Constructors can't call any instance methods in dart :-(
+  ///
+  /// Using [MatrixEdgeDef] because it gives us the three parts we need
+  /// 'from', 'to' and 'edge' data in a single object.
+  ///
+  AdjacencyMatrix(
+    Set<MatrixEdgeDef<N, T>> edges,
+  ) {
+    edgeMatrix = _mergeEdges<N, T>(
+      edges: edges,
+      nodeToIndex: nodeMap,
+      indexToNode: rankMap,
+      existingEdges: edgeMatrix,
+    );
+  }
+
   /// tells us the rank of the Node, its index into the edgeMatrix
   Map<N, int> nodeMap = {};
 
@@ -26,30 +42,16 @@ class AdjacencyMatrix<N, T> {
   ///
   List<T?> edgeMatrix = [];
 
-  /// Constructors can't call any instance methods in dart :-(
-  ///
-  /// Using [MatrixEdgeDef] because it gives us the three parts we need
-  /// 'from', 'to' and 'edge' data in a single object.
-  ///
-  AdjacencyMatrix(
-    Set<MatrixEdgeDef<N, T>> edges,
-  ) {
-    edgeMatrix = _mergeEdges<N, T>(
-        edges: edges,
-        nodeToIndex: nodeMap,
-        indexToNode: rankMap,
-        existingEdges: edgeMatrix);
-  }
-
   /// Explicitly adds edges.  Implicitly adds nodes. Replaces existing edge.
   /// This is expensive because it builds a new matrix.
   /// Add as many as you can at at a time to reduce resizing.
   void mergeEdges(Set<MatrixEdgeDef<N, T>> edges) {
     edgeMatrix = _mergeEdges<N, T>(
-        edges: edges,
-        nodeToIndex: nodeMap,
-        indexToNode: rankMap,
-        existingEdges: edgeMatrix);
+      edges: edges,
+      nodeToIndex: nodeMap,
+      indexToNode: rankMap,
+      existingEdges: edgeMatrix,
+    );
   }
 
   /// Returns the nodes on the _to_ side of an edge _from_ [aNode]
@@ -185,25 +187,28 @@ class AdjacencyMatrix<N, T> {
 
 /// Adds edges to an existing matrix.
 /// Adds nodes as needed to store the edges
-List<T?> _mergeEdges<N, T>(
-    {required Set<MatrixEdgeDef<N, T>> edges,
-    required Map<N, int> nodeToIndex,
-    required Map<int, N> indexToNode,
-    required List<T?> existingEdges}) {
+List<T?> _mergeEdges<N, T>({
+  required Set<MatrixEdgeDef<N, T>> edges,
+  required Map<N, int> nodeToIndex,
+  required Map<int, N> indexToNode,
+  required List<T?> existingEdges,
+}) {
   final oldNumNodes = nodeToIndex.length;
 
   // Find all the nodes in all the edges
   // Use a set to dedupe
   // Create a map from the Node to its position
   // Do NOT replace existing node with a new one because will change the index.
-  var newNodeToIndexEntries = edges
+  final newNodeToIndexEntries = edges
       .map((e) => [e.from, e.to])
       .flattened
       .whereType<N>()
       .toSet()
-      .mapIndexed((index, node) => nodeToIndex.containsKey(node)
-          ? null
-          : MapEntry(node, index + oldNumNodes))
+      .mapIndexed(
+        (index, node) => nodeToIndex.containsKey(node)
+            ? null
+            : MapEntry(node, index + oldNumNodes),
+      )
       .nonNulls;
   nodeToIndex.addEntries(newNodeToIndexEntries);
   // rankMap is nodeMap inverted
@@ -212,17 +217,20 @@ List<T?> _mergeEdges<N, T>(
       .addEntries(nodeToIndex.entries.map((e) => MapEntry(e.value, e.key)));
 
   // create the empty matrix
-  List<T?> edgeMatrix =
+  final List<T?> edgeMatrix =
       List.filled(nodeToIndex.length * nodeToIndex.length, null);
   // copy the old matrix into it
   for (int fromRank = 0; fromRank < oldNumNodes; fromRank++) {
     for (int toRank = 0; toRank < oldNumNodes; toRank++) {
       edgeMatrix[_calculateLocationFromRank(
-              fromRank: fromRank,
-              toRank: toRank,
-              rankSize: nodeToIndex.length)] =
-          existingEdges[_calculateLocationFromRank(
-              fromRank: fromRank, toRank: toRank, rankSize: oldNumNodes)];
+        fromRank: fromRank,
+        toRank: toRank,
+        rankSize: nodeToIndex.length,
+      )] = existingEdges[_calculateLocationFromRank(
+        fromRank: fromRank,
+        toRank: toRank,
+        rankSize: oldNumNodes,
+      )];
     }
   }
 
@@ -254,7 +262,7 @@ List<T?> _mergeEdges<N, T>(
   return edgeMatrix;
 }
 
-String _fixedWidthString(Object o, {maxCellWidth = 10}) =>
+String _fixedWidthString(Object o, {int maxCellWidth = 10}) =>
     o.toString().padRight(maxCellWidth).substring(0, maxCellWidth);
 
 int _calculateLocationFromRank({
@@ -272,23 +280,21 @@ int _calculateLocationFromRank({
 /// * [edgeData] is required if [to] is provided
 ///
 class MatrixEdgeDef<N, T> {
-  final N from;
-  final N? to;
-  final T? edgeData;
-  final bool directed;
-
   MatrixEdgeDef({
     required this.from,
     this.to,
     this.edgeData,
     this.directed = true,
   });
+  final N from;
+  final N? to;
+  final T? edgeData;
+  final bool directed;
 }
 
 class InvalidMatrixEdgeDef<MatrixEdgeDef> implements Exception {
-  final MatrixEdgeDef edge;
-
   InvalidMatrixEdgeDef(this.edge);
+  final MatrixEdgeDef edge;
 
   @override
   String toString() => 'A MatrixEdgeDef had a constraint violation $edge';

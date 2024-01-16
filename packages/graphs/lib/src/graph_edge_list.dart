@@ -10,8 +10,8 @@
 // 1. Hide instance variables
 //
 
-import 'graph_edge.dart';
-import 'graph_node.dart';
+import 'package:fs_graphs/src/graph_edge.dart';
+import 'package:fs_graphs/src/graph_node.dart';
 
 /// A representation of a directed graph.
 ///
@@ -26,11 +26,10 @@ import 'graph_node.dart';
 /// [N] is the [GraphNode] data type. [T] is the [GraphEdge] data type.
 /// This does NOT support orphan [GraphNode] with no edges.
 class DirectedGraphEdgeList<N, T> {
-  final Set<DirectedGraphEdge<N, T>> edges = {};
-
   DirectedGraphEdgeList(Set<DirectedGraphEdge<N, T>> newEdges) {
     _mergeDirectedEdges(existingEdges: edges, newEdges: newEdges);
   }
+  final Set<DirectedGraphEdge<N, T>> edges = {};
 
   /// Adds edges to existing graph
   /// Replaces existing edges for a from-to pair
@@ -60,23 +59,23 @@ class DirectedGraphEdgeList<N, T> {
   @override
   String toString() {
     final returnBuffer = StringBuffer();
-    for (var element in edges) {
+    for (final element in edges) {
       returnBuffer.writeln(' ${_fixedWidthString(element.from)} '
           '${_fixedWidthString(element.to)} '
-          '${_fixedWidthString(element.data.toString())} '
-          '');
+          '${_fixedWidthString(element.data.toString())} ');
     }
 
     return returnBuffer.toString();
   }
 }
 
-String _fixedWidthString(Object o, {maxCellWidth = 10}) =>
+String _fixedWidthString(Object o, {int maxCellWidth = 10}) =>
     o.toString().padRight(maxCellWidth).substring(0, maxCellWidth);
 
-void _mergeDirectedEdges(
-    {required Set<DirectedGraphEdge> existingEdges,
-    required Set<DirectedGraphEdge> newEdges}) {
+void _mergeDirectedEdges({
+  required Set<DirectedGraphEdge> existingEdges,
+  required Set<DirectedGraphEdge> newEdges,
+}) {
   // ignore: avoid_function_literals_in_foreach_calls
   newEdges.forEach((oneEdge) {
     if (!existingEdges.contains(oneEdge)) {
@@ -102,11 +101,10 @@ void _mergeDirectedEdges(
 /// [N] is the [GraphNode] data type. [T] is the [GraphEdge] data type.
 /// This does NOT support orphan [GraphNode] with no edges.
 class UndirectedGraphEdgeList<N, T> {
-  final Set<UndirectedGraphEdge<N, T>> edges = {};
-
   UndirectedGraphEdgeList(Set<UndirectedGraphEdge<N, T>> newEdges) {
     _mergeUndirectedEdges(existingEdges: edges, newEdges: newEdges);
   }
+  final Set<UndirectedGraphEdge<N, T>> edges = {};
 
   /// Adds edges to existing graph
   /// Replaces existing edges for a from-to pair
@@ -154,9 +152,10 @@ class UndirectedGraphEdgeList<N, T> {
   String toString() => edges.toString();
 }
 
-void _mergeUndirectedEdges(
-    {required Set<UndirectedGraphEdge> existingEdges,
-    required Set<UndirectedGraphEdge> newEdges}) {
+void _mergeUndirectedEdges({
+  required Set<UndirectedGraphEdge> existingEdges,
+  required Set<UndirectedGraphEdge> newEdges,
+}) {
   // ignore: avoid_function_literals_in_foreach_calls
   newEdges.forEach((oneEdge) {
     if (!existingEdges.contains(oneEdge)) {

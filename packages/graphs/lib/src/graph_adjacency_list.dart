@@ -22,13 +22,13 @@
 ///
 /// [T] is the Node type
 class DirectedGraphAdjacencyList<T> {
-  /// a Set because this model only supports one directed from-to per pair
-  final Map<T, Set<T>> nodesAndEdges = {};
-
   /// Shallow copies the past in collection
   DirectedGraphAdjacencyList(Map<T, Set<T>> initialEdges) {
     _mergeEdges(initialEdges, nodesAndEdges);
   }
+
+  /// a Set because this model only supports one directed from-to per pair
+  final Map<T, Set<T>> nodesAndEdges = {};
 
   /// replaces any edges on T with Set<T>
   void mergeEdges(Map<T, Set<T>> newEdges) {

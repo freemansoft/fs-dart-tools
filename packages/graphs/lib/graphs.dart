@@ -7,9 +7,6 @@ library;
 
 export 'src/graph_adjacency_list.dart';
 export 'src/graph_adjacency_matrix.dart';
-export 'src/graph_edge_list.dart';
-
 export 'src/graph_edge.dart';
+export 'src/graph_edge_list.dart';
 export 'src/graph_node.dart';
-
-// TODO: Export any libraries intended for clients of this package.

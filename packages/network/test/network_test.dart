@@ -13,33 +13,36 @@ void main() async {
     });
 
     test('Succeed with an exclusion', () async {
-      final badSSLDomain = 'wrong.host.badssl.com';
-      final requestDomain = 'wrong.host.badssl.com';
+      const badSSLDomain = 'wrong.host.badssl.com';
+      const requestDomain = 'wrong.host.badssl.com';
       HttpOverrides.global = DevelopmentHttpConfig(
         domains: [badSSLDomain], /*proxyPort: 8080*/
       );
 
-      var url = Uri.https(requestDomain, '/');
-      var response = await http.get(url);
-      print('Response status: ${response.statusCode}');
-      print('Response body: ${response.body}');
+      final url = Uri.https(requestDomain, '/');
+      final response = await http.get(url);
+      expect(response.statusCode, equals(200));
+      // print('Response status: ${response.statusCode}');
+      // print('Response body: ${response.body}');
     });
 
     test('Fail with wrong exclusion', () async {
-      final badSSLDomain = 'apple.com';
-      final requestDomain = 'wrong.host.badssl.com';
+      const badSSLDomain = 'apple.com';
+      const requestDomain = 'wrong.host.badssl.com';
       HttpOverrides.global = DevelopmentHttpConfig(
         domains: [badSSLDomain], /*proxyPort: 8080*/
       );
 
-      var url = Uri.https(requestDomain, '/');
+      final url = Uri.https(requestDomain, '/');
+      // ignore: unawaited_futures
       expectLater(() => http.get(url), throwsException);
     });
 
     test('Fail Without exclusion', () async {
-      final requestDomain = 'wrong.host.badssl.com';
+      const requestDomain = 'wrong.host.badssl.com';
 
-      var url = Uri.https(requestDomain, '/');
+      final url = Uri.https(requestDomain, '/');
+      // ignore: unawaited_futures
       expectLater(() => http.get(url), throwsException);
     });
   });

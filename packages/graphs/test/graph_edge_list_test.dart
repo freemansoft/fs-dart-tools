@@ -7,10 +7,10 @@ void main() {
     test(
       'Create a directed graph and merge additional',
       () {
-        final nodeA = GraphNode(id: 'A', data: 1);
-        final nodeB = GraphNode(id: 'B', data: 2);
-        final nodeC = GraphNode(id: 'C', data: 3);
-        final nodeD = GraphNode(id: 'D', data: 4);
+        const nodeA = GraphNode(id: 'A', data: 1);
+        const nodeB = GraphNode(id: 'B', data: 2);
+        const nodeC = GraphNode(id: 'C', data: 3);
+        const nodeD = GraphNode(id: 'D', data: 4);
         final graph = DirectedGraphEdgeList({
           DirectedGraphEdge(from: nodeA, to: nodeC, data: ''),
           DirectedGraphEdge(from: nodeB, to: nodeC, data: ''),
@@ -32,7 +32,7 @@ void main() {
         expect(nextToNodeC.length, 3);
         // expect(adjacentNodeC.length, 3);
 
-        final nodeZZ = GraphNode(id: 'zz', data: 99);
+        const nodeZZ = GraphNode(id: 'zz', data: 99);
         graph.mergeEdges({
           DirectedGraphEdge(from: nodeZZ, to: nodeD, data: ''),
         });
@@ -49,9 +49,9 @@ void main() {
     test(
       'Multiple directed edges of different types same nodes',
       () {
-        final nodeA = GraphNode(id: 'A', data: 1);
-        final nodeB = GraphNode(id: 'B', data: 2);
-        final nodeC = GraphNode(id: 'C', data: 3);
+        const nodeA = GraphNode(id: 'A', data: 1);
+        const nodeB = GraphNode(id: 'B', data: 2);
+        const nodeC = GraphNode(id: 'C', data: 3);
         final graph = DirectedGraphEdgeList({
           DirectedGraphEdge(from: nodeA, to: nodeC, data: ''),
           DirectedGraphEdge(from: nodeA, to: nodeC, data: 5),
@@ -71,10 +71,10 @@ void main() {
     test(
       'Create a undirected graph and merge additional',
       () {
-        final nodeA = GraphNode(id: 'A', data: 1);
-        final nodeB = GraphNode(id: 'B', data: 2);
-        final nodeC = GraphNode(id: 'C', data: 3);
-        final nodeD = GraphNode(id: 'D', data: 4);
+        const nodeA = GraphNode(id: 'A', data: 1);
+        const nodeB = GraphNode(id: 'B', data: 2);
+        const nodeC = GraphNode(id: 'C', data: 3);
+        const nodeD = GraphNode(id: 'D', data: 4);
         final graph = UndirectedGraphEdgeList({
           UndirectedGraphEdge(from: nodeA, to: nodeC, data: ''),
           UndirectedGraphEdge(from: nodeB, to: nodeC, data: ''),
@@ -83,10 +83,10 @@ void main() {
           UndirectedGraphEdge(from: nodeC, to: nodeD, data: ''),
         });
 
-        // final Iterable<GraphNode<int>> nextToNodeD = graph.nodesNextTo(nodeD);
+        //final Iterable<GraphNode<int>> nextToNodeD = graph.nodesNextTo(nodeD);
         final Iterable<GraphNode<int>> adjacentNodeD =
             graph.nodesAdjacent(nodeD);
-        // final Iterable<GraphNode<int>> nextToNodeC = graph.nodesNextTo(nodeC);
+        //final Iterable<GraphNode<int>> nextToNodeC = graph.nodesNextTo(nodeC);
         final Iterable<GraphNode<int>> adjacentNodeC =
             graph.nodesAdjacent(nodeC);
 
@@ -96,7 +96,7 @@ void main() {
         // expect(nextToNodeC.length, 3);
         expect(adjacentNodeC.length, 3);
 
-        final nodeZZ = GraphNode(id: 'zz', data: 99);
+        const nodeZZ = GraphNode(id: 'zz', data: 99);
         graph.mergeEdges({
           UndirectedGraphEdge(from: nodeZZ, to: nodeD, data: ''),
         });
@@ -113,9 +113,9 @@ void main() {
     test(
       'Multiple undirected edges of different types same nodes',
       () {
-        final nodeA = GraphNode(id: 'A', data: 1);
-        final nodeB = GraphNode(id: 'B', data: 2);
-        final nodeC = GraphNode(id: 'C', data: 3);
+        const nodeA = GraphNode(id: 'A', data: 1);
+        const nodeB = GraphNode(id: 'B', data: 2);
+        const nodeC = GraphNode(id: 'C', data: 3);
         final graph = UndirectedGraphEdgeList({
           UndirectedGraphEdge(from: nodeA, to: nodeC, data: ''),
           UndirectedGraphEdge(from: nodeA, to: nodeC, data: 5),

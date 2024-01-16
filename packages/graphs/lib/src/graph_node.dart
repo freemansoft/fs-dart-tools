@@ -6,12 +6,14 @@
 // This rquires two classes because Edge equality and hashcode
 // take directionality into account or they ignore it
 
+import 'package:meta/meta.dart';
+
 /// Generic node where the id is used for identity purposes
+@immutable
 class GraphNode<T> {
+  const GraphNode({required this.id, this.data});
   final String id;
   final T? data;
-
-  GraphNode({required this.id, this.data});
 
   @override
   bool operator ==(Object other) => other is GraphNode && other.id == id;

@@ -2,21 +2,20 @@
 // Use of this source code is governed by an
 // MIT-style license that can be found in the LICENSE file.
 
-import 'package:graphs/graphs.dart';
-
 import 'package:fs_graphs/graphs.dart';
+import 'package:graphs/graphs.dart';
 
 /// Uses representation of a directed graph implemented as an edge list.
 ///
 void main() {
-  final nodeA = GraphNode(id: 'A', data: 1);
-  final nodeB = GraphNode(id: 'B', data: 2);
-  final nodeC = GraphNode(id: 'C', data: 3);
-  final nodeD = GraphNode(id: 'D', data: 4);
+  const nodeA = GraphNode(id: 'A', data: 1);
+  const nodeB = GraphNode(id: 'B', data: 2);
+  const nodeC = GraphNode(id: 'C', data: 3);
+  const nodeD = GraphNode(id: 'D', data: 4);
 
   // added later to test merge
-  final nodeZZ = GraphNode(id: 'ZZ', data: 99);
-  final nodeZZZ = GraphNode(id: 'ZZZ', data: 999);
+  const nodeZZ = GraphNode(id: 'ZZ', data: 99);
+  const nodeZZZ = GraphNode(id: 'ZZZ', data: 999);
 
   final nodes = <GraphNode<int>>[nodeA, nodeB, nodeC, nodeD];
 
@@ -29,7 +28,7 @@ void main() {
     DirectedGraphEdge<int, void>(from: nodeC, to: nodeD),
   });
 
-  print('Directed graph: ${graphDirected.toString()}');
+  print('Directed graph: $graphDirected');
 
   print(
     'Directed: $nodeB next to ${graphDirected.nodesNextTo(nodeB)}',
@@ -48,7 +47,10 @@ void main() {
 
   graphDirected.mergeEdges({
     DirectedGraphEdge<int, String>(
-        from: nodeZZ, to: nodeZZZ, data: 'discovered')
+      from: nodeZZ,
+      to: nodeZZZ,
+      data: 'discovered',
+    ),
   });
   print('Directed graph after additions: \n$graphDirected');
   print('\n');
@@ -62,7 +64,7 @@ void main() {
     UndirectedGraphEdge<int, void>(from: nodeC, to: nodeD),
   });
 
-  print('Undirected graph: ${graphDirected.toString()}');
+  print('Undirected graph: $graphDirected');
 
   print('Undirected: $nodeB next to ${graphUndirected.nodesAdjacent(nodeB)}');
 
@@ -72,7 +74,10 @@ void main() {
 
   graphUndirected.mergeEdges({
     UndirectedGraphEdge<int, String>(
-        from: nodeZZ, to: nodeZZZ, data: 'discovered')
+      from: nodeZZ,
+      to: nodeZZZ,
+      data: 'discovered',
+    ),
   });
   print('Undirected graph after additions: \n$graphDirected');
 }

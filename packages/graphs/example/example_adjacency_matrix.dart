@@ -2,19 +2,18 @@
 // Use of this source code is governed by an
 // MIT-style license that can be found in the LICENSE file.
 
-import 'package:graphs/graphs.dart';
-
 import 'package:fs_graphs/graphs.dart';
+import 'package:graphs/graphs.dart';
 
 /// Uses representation of a directed graph implemented as an adjacency list.
 ///
 void main() {
-  final nodeA = GraphNode(id: 'A', data: 1);
-  final nodeB = GraphNode(id: 'B', data: 2);
-  final nodeC = GraphNode(id: 'C', data: 3);
-  final nodeD = GraphNode(id: 'D', data: 4);
-  final nodeE = GraphNode(id: 'E', data: 5);
-  final nodeF = GraphNode(id: 'F', data: 6);
+  const nodeA = GraphNode(id: 'A', data: 1);
+  const nodeB = GraphNode(id: 'B', data: 2);
+  const nodeC = GraphNode(id: 'C', data: 3);
+  const nodeD = GraphNode(id: 'D', data: 4);
+  const nodeE = GraphNode(id: 'E', data: 5);
+  const nodeF = GraphNode(id: 'F', data: 6);
 
   // Capture first level relationships. Everything after that is complicated
   final graph = AdjacencyMatrix<GraphNode<int>, String>({
@@ -57,8 +56,8 @@ void main() {
   print('shortest from $nodeA to $nodeD is $shortest');
 
   // add a couple nodes and edges
-  final nodeZZ = GraphNode(id: 'ZZ', data: 99);
-  final nodeZZZ = GraphNode(id: 'ZZZ', data: 999);
+  const nodeZZ = GraphNode(id: 'ZZ', data: 99);
+  const nodeZZZ = GraphNode(id: 'ZZZ', data: 999);
   graph.mergeEdges({
     MatrixEdgeDef(from: nodeZZ, to: nodeZZZ, edgeData: '??', directed: false),
     MatrixEdgeDef(from: nodeZZ, to: nodeD, edgeData: 'discovered'),
