@@ -63,6 +63,10 @@ Adjacency List does not retain any relationship _type_
 
 ![Example graph stored in an adjacency matrix](images/Graph-Adjacency-Matrix.drawio.png)
 
+#### Video
+
+A video walkthrough  [![Discussion of the graph implementations](https://img.youtube.com/vi/caaIZ3dpLxw/0.jpg)](https://www.youtube.com/watch?v=caaIZ3dpLxw)
+
 ## Additional information
 
 ### General graph references
