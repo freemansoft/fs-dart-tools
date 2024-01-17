@@ -41,6 +41,28 @@ Some of the graph storage implementations lend themselves to directed graphs. Th
 
 Some of the graph storage implementations are hard wired to be _undirected_.  They don't actually support one way _directed_ graphs.
 
+### Example Graph
+
+The example graph has two node types, _Person_ and _Property_ and two relation types, one _person-to-person_ and one _person-to-property_.
+
+None of the graph implementations implement Node/Relationship restrictions.
+
+![Example graph used in following in following representations.](images/Example-Graph.drawio.png)
+
+#### Edge List
+
+![Example graph stored in an edge list](images/Graph-Edge-List.drawio.png)
+
+#### Adjacency List
+
+Adjacency List does not retain any relationship _type_
+
+![Example graph stored in an adjacency list](images/Graph-Adjacency-List.drawio.png)
+
+#### Adjacency Matrix
+
+![Example graph stored in an adjacency matrix](images/Graph-Adjacency-Matrix.drawio.png)
+
 ## Additional information
 
 ### General graph references
