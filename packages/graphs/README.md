@@ -20,12 +20,12 @@ This currently implements weak sauce versions of the following models. All of th
 
 Simple `Node<T>`  and `Edge<N>` are provided.  They let you put data on your node or edge.  The latter is useful if you wanted something like weights on edges.
 
-| Implementation | Class| Directed _edges_ | Undirected _edges_ | Multiple _edges_[1] | Edge data[2] | Notes|
-| - | - | - | - | - | - | - |
-| Adjacency List | DirectedGraphAdjacencyList | Yes | Slow | Yes [3] | No |  This is a denormalized directed graph representation _by design_.  |
-| Adjacency Matrix | AdjacencyMatrix | Yes | Yes | No | Yes [5] | This is a matrix graph representation.  Edges can be added as directed or undirected.   |
-| Edge List | DirectedGraphEdgeList | Yes | Slow | Yes [4] |  Yes [5] | This is a normalized graph representation. |
-| Edge List | UndirectionalGraphEdgeList | Yes | Yes | Yes [4] | Yes [5] | This is a normalized graph representation where all the edges are treated as bi-directional. |
+| Implementation   | Class                      | Directed _edges_ | Undirected _edges_ | Multiple _edges_[1] | Edge data[2] | Notes                                                                                        |
+| ---------------- | -------------------------- | ---------------- | ------------------ | ------------------- | ------------ | -------------------------------------------------------------------------------------------- |
+| Adjacency List   | DirectedGraphAdjacencyList | Yes              | Slow               | Yes [3]             | No           | This is a denormalized directed graph representation _by design_.                            |
+| Adjacency Matrix | AdjacencyMatrix            | Yes              | Yes                | No                  | Yes [5]      | This is a matrix graph representation.  Edges can be added as directed or undirected.        |
+| Edge List        | DirectedGraphEdgeList      | Yes              | Slow               | Yes [4]             | Yes [5]      | This is a normalized graph representation.                                                   |
+| Edge List        | UndirectionalGraphEdgeList | Yes              | Yes                | Yes [4]             | Yes [5]      | This is a normalized graph representation where all the edges are treated as bi-directional. |
 
 Notes
 
@@ -43,7 +43,7 @@ Some of the graph storage implementations are hard wired to be _undirected_.  Th
 
 ### Example Graph
 
-The example graph has two node types, _Person_ and _Property_ and two relation types, one _person-to-person_ and one _person-to-property_.
+The example graph has **two** node types, _Person_ and _Property_ and two relation types, one _person-to-person_ and one _person-to-property_.
 
 None of the graph implementations implement Node/Relationship restrictions.
 
@@ -51,15 +51,23 @@ None of the graph implementations implement Node/Relationship restrictions.
 
 #### Edge List
 
+Graph nodes are defined with their properties.  Then each relationship is defined via an edge that contains the source, target and any edge data including an edge type.  There is a row for each outbound relationship, in directed graphs.
+
+This chart shows properties as edge list entries but that isn't required.
+
 ![Example graph stored in an edge list](images/Graph-Edge-List.drawio.png)
 
 #### Adjacency List
 
-Adjacency List does not retain any relationship _type_
+All of the graph nodes are defined.  Each graph node has a list of outbound edges. Those edges can contain data.
+
+Adjacency List does not retain any relationship _type_ though that could be a property on the relationship if it supports data.
 
 ![Example graph stored in an adjacency list](images/Graph-Adjacency-List.drawio.png)
 
 #### Adjacency Matrix
+
+Relationships with type and possible metadata are stored in a table.  The table can be sparse depending on the number of relatinships.
 
 ![Example graph stored in an adjacency matrix](images/Graph-Adjacency-Matrix.drawio.png)
 

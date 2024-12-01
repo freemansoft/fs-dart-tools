@@ -4,7 +4,7 @@ version: 1.0.0
 # repository: https://github.com/my_org/my_repo
 
 environment:
-  sdk: ^3.2.3
+  sdk: ^3.5.3
 
 # Add regular dependencies here.
 dependencies:
@@ -12,7 +12,7 @@ dependencies:
   # path: ^1.8.0
 
 dev_dependencies:
-  http: ^1.1.2
+  http: ^1.2.2
   lints: ^2.1.0
   test: ^1.24.0
-  very_good_analysis: ^5.1.0
+  very_good_analysis: ^6.0.0
